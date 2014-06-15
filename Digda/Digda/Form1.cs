@@ -39,8 +39,8 @@ namespace Digda
 
 	        Graphics g = this.CreateGraphics();
 	        Bitmap b1 = Properties.Resources.test01;
-	        b1 = new Bitmap(b1, 120, 800);
-	        Rectangle r = new Rectangle(0, 0, 120, 300);
+	        //b1 = new Bitmap(b1, 120, 800);		//리사이즈는 이런식으로
+	        Rectangle r = new Rectangle(0, 0, 60, 181);
 	        Bitmap b2 = b1.Clone(r, b1.PixelFormat);
 	        g.DrawImage(b2, 0, 0);
 	        g.Dispose();
