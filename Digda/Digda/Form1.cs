@@ -51,10 +51,10 @@ namespace Digda
 	        }
 
 	        int randx = r.Next(0, 610);
-	        int randy = r.Next(200, 600);
-	        int rands = r.Next(50, 700);
+	        int randy = r.Next(200, 600);//200 600
+	        int rands = r.Next(50, 1000); // 50 700
 
-	        if (digdig.Count < 4)
+	        if (digdig.Count < 5)
 	        {
 		Digda d = new Digda(randx, randy, rands);
 		digdig.Add(d);

@@ -92,10 +92,10 @@
     <None Include="Resources\soil.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\angry.png" />
+    <None Include="Resources\digda.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\digda.png" />
+    <None Include="Resources\angry.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

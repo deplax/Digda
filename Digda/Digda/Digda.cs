@@ -64,7 +64,7 @@ namespace Digda
 	public Digda(int posx, int posy, int scale)
 	{
 	        imgw = 90;
-	        imgh = scale ;
+	        imgh = 720 ;
 
 	        digdaImg = Properties.Resources.digda;
 	        for (int i = 0; i < 720; i += 90)
@@ -73,6 +73,7 @@ namespace Digda
 		Bitmap digdaSingle = digdaImg.Clone(cutImg, digdaImg.PixelFormat);
 		digdaAni.Add(digdaSingle);
 	        }
+	        imgh = scale;
 	        startx = posx;
 	        starty = posy;
 
@@ -85,7 +86,7 @@ namespace Digda
 	        stayTime = r.Next(1, 20);		        //지속시간은 랜덤으로
 
 	        Resize(scale);
-	        limit = r.Next(50, 700);
+	        limit = r.Next(50, 1000); // 50 700
 	        if (limit > imgh)
 		limit = imgh;
 	}
@@ -103,8 +104,8 @@ namespace Digda
 	{
 	        if (starty - y > imgh)				//영역 침범 방지
 		y = starty - imgh;
-	        else if(starty - y == 0)
-		y = starty + 1;
+	        else if(starty - y <= 0)
+		y = starty - 1;
 
 	        imgCnt++;
 	        digda = new Bitmap(digdaAni[imgCnt % 8], imgw, imgh);	        //줄줄이 그리자~
@@ -117,7 +118,7 @@ namespace Digda
 	        else
 	        {
 		
-		if (dieCnt > 2)
+		if (dieCnt > 4)
 		{
 		        alive = false;
 		}
