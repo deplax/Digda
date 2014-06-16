@@ -43,6 +43,7 @@
 	        this.ClientSize = new System.Drawing.Size(684, 662);
 	        this.Name = "Form1";
 	        this.Text = "Form1";
+	        this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
 	        this.ResumeLayout(false);
 
 	}

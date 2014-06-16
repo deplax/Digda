@@ -24,7 +24,7 @@ namespace Digda
 	public Form1()
 	{
 	        InitializeComponent();
-	        timer1.Interval = 33;		        /////////////////////////////////////////////////
+	        timer1.Interval = 20;		        /////////////////////////////////////////////////
 	        timer1.Enabled = true;
 
 	        Bitmap x = Properties.Resources.soil;
@@ -46,15 +46,15 @@ namespace Digda
 
 	        if (MouseButtons == MouseButtons.Left)
 	        {
-		MessageBox.Show("test");
+		//MessageBox.Show("test");
 		//x += 10;
 	        }
 
-	        int randx = r.Next(100, 600);
-	        int randy = r.Next(100, 600);
-	        int rands = r.Next(90, 360);
+	        int randx = r.Next(0, 610);
+	        int randy = r.Next(200, 600);
+	        int rands = r.Next(50, 700);
 
-	        if (digdig.Count < 2)
+	        if (digdig.Count < 4)
 	        {
 		Digda d = new Digda(randx, randy, rands);
 		digdig.Add(d);
@@ -98,25 +98,31 @@ namespace Digda
 		{
 		        digdig[i].Draw(scn);
 		}
-
 		dirt[i].Draw(scn);
-
 	        }
-
-
-
 	        g.DrawImage(screen, 0, 0);			//마지막에 따란~!
-	        
-	        
-
 	        g.Dispose();
-
 	}
 
 	private void timer1_Tick(object sender, EventArgs e)
 	{
 	        update();
 	        draw();
+	}
+
+	private void Form1_MouseDown(object sender, MouseEventArgs e)
+	{
+	        Point p = new Point(e.X, e.Y);
+	        for (int i = 0; i < digdig.Count; i++)
+	        {
+		Rectangle r = digdig[i].Getbox();
+		Rectangle sensor = new Rectangle(digdig[i].Getx(), digdig[i].Gety(), r.Width, r.Height / 3 + 5);
+		if(sensor.Contains(p))
+		{
+		        digdig[i].DigdaDie();
+		        //MessageBox.Show("hit");
+		}
+	        }
 	}
 
         }

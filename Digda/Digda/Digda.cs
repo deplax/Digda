@@ -34,10 +34,12 @@ namespace Digda
 	int limit;
 	bool digsw = true;			        //들락날락 스위치
 	bool alive;
+	bool die;
 
 	int imgCnt;				        //이미지 플립용
 	int imgw, imgh;				        //두더지 스케일 조절용
 
+	int dieCnt;
 
 
 	Bitmap digda;
@@ -45,11 +47,12 @@ namespace Digda
 	Bitmap digdaImg;
 
 	Bitmap hit;
+	Rectangle box;
 
 	public void Resize(int h)
 	{
 	        //세로 크기에 따라 가로 가변 조절
-	        imgw = (int)(h / 3);
+	        imgw = (int)(h / 8);
 	}
 	public void test()
 	{
@@ -60,11 +63,11 @@ namespace Digda
 
 	public Digda(int posx, int posy, int scale)
 	{
-	        imgw = 60;
-	        imgh = 180;
+	        imgw = 90;
+	        imgh = scale ;
 
-	        digdaImg = Properties.Resources.test02;
-	        for (int i = 0; i < 240; i += 60)
+	        digdaImg = Properties.Resources.digda;
+	        for (int i = 0; i < 720; i += 90)
 	        {
 		Rectangle cutImg = new Rectangle(i, 0, imgw, imgh);
 		Bitmap digdaSingle = digdaImg.Clone(cutImg, digdaImg.PixelFormat);
@@ -77,11 +80,12 @@ namespace Digda
 	        y = starty;
 
 	        alive = true;
+	        die = false;
 
 	        stayTime = r.Next(1, 20);		        //지속시간은 랜덤으로
 
 	        Resize(scale);
-	        limit = r.Next(50, 800);
+	        limit = r.Next(50, 700);
 	        if (limit > imgh)
 		limit = imgh;
 	}
@@ -99,11 +103,27 @@ namespace Digda
 	{
 	        if (starty - y > imgh)				//영역 침범 방지
 		y = starty - imgh;
+	        else if(starty - y == 0)
+		y = starty + 1;
 
 	        imgCnt++;
-	        digda = new Bitmap(digdaAni[imgCnt % 4], imgw, imgh);	        //줄줄이 그리자~
-	        Rectangle r = new Rectangle(0, 0, imgw, starty - y);
-	        Bitmap temp = digda.Clone(r, digda.PixelFormat);
+	        digda = new Bitmap(digdaAni[imgCnt % 8], imgw, imgh);	        //줄줄이 그리자~
+	        box = new Rectangle(0, 0, imgw, starty - y );
+	        Bitmap temp;
+	        hit = Properties.Resources.angry;
+	        hit = new Bitmap(hit, imgw, imgh);
+	        if (!die)
+		temp = digda.Clone(box, digda.PixelFormat);
+	        else
+	        {
+		
+		if (dieCnt > 2)
+		{
+		        alive = false;
+		}
+		temp = hit.Clone(box, hit.PixelFormat);
+		dieCnt++;
+	        }
 	        scn.DrawImage(temp, x, y);
 
 
@@ -113,7 +133,7 @@ namespace Digda
 	{
 	        if (digsw)
 	        {
-		Up(r.Next(1, 20));
+		Up(r.Next(10, 40));
 		if (Math.Abs(starty - y) > limit)
 		        digsw = false;
 	        }
@@ -121,7 +141,7 @@ namespace Digda
 	        {
 		if (stayTime == stayCnt)
 		{
-		        Down(r.Next(1, 20));
+		        Down(r.Next(10, 40));
 		        if (starty - y <= 0)
 		        {
 			y = starty - 1;
@@ -139,6 +159,25 @@ namespace Digda
 	public bool DigdaAlive()
 	{
 	        return alive;
+	}
+
+	public Rectangle Getbox()
+	{
+	        return box;
+	}
+	public int Getx()
+	{
+	        return x;
+	}
+	public int Gety()
+	{
+	        return y;
+	}
+	public void DigdaDie()
+	{
+	        die = true;
+	        
+
 	}
 
         }
@@ -195,7 +234,7 @@ namespace Digda
 
 	public void Resize(int h)
 	{
-	        imgw = (int)(h / 3);
+	        imgw = (int)(h / 8);
 	        imgh = imgw;
 	}
 
