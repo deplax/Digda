@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Digda
 {
@@ -43,10 +44,18 @@ namespace Digda
 	List<Bitmap> digdaAni = new List<Bitmap>();
 	Bitmap digdaImg;
 
+	Bitmap hit;
+
 	public void Resize(int h)
 	{
 	        //세로 크기에 따라 가로 가변 조절
 	        imgw = (int)(h / 3);
+	}
+	public void test()
+	{
+	        hit = Properties.Resources.angry;
+	       // hit.
+	        MessageBox.Show("test");
 	}
 
 	public Digda(int posx, int posy, int scale)
@@ -96,6 +105,8 @@ namespace Digda
 	        Rectangle r = new Rectangle(0, 0, imgw, starty - y);
 	        Bitmap temp = digda.Clone(r, digda.PixelFormat);
 	        scn.DrawImage(temp, x, y);
+
+
 	}
 
 	public void Dig()

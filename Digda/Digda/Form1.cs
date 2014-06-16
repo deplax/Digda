@@ -46,6 +46,7 @@ namespace Digda
 
 	        if (MouseButtons == MouseButtons.Left)
 	        {
+		MessageBox.Show("test");
 		//x += 10;
 	        }
 
@@ -94,13 +95,19 @@ namespace Digda
 	        for (int i = 0; i < digdig.Count; i++)
 	        {
 		if (dirt[i].DrawFinish())
+		{
 		        digdig[i].Draw(scn);
+		}
 
 		dirt[i].Draw(scn);
 
 	        }
 
+
+
 	        g.DrawImage(screen, 0, 0);			//마지막에 따란~!
+	        
+	        
 
 	        g.Dispose();
 
