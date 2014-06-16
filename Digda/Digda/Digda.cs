@@ -88,12 +88,14 @@ namespace Digda
 
 	public void Draw(Graphics scn)
 	{
-	        if (starty - y > imgh)				//영역 침범 방지
-		y = starty - imgh;
+	        if (starty - y > 90)				//영역 침범 방지
+		y = starty - 90;
+
+	        resize();
 
 	        imgCnt++;
-	        digda = new Bitmap(digdaAni[imgCnt % 4], imgw, imgh);	        //줄줄이 그리자~
-	        Rectangle r = new Rectangle(0, 0, imgw, starty - y);
+	        digda = new Bitmap(digdaAni[imgCnt % 4], 30, 90);	        //줄줄이 그리자~
+	        Rectangle r = new Rectangle(0, 0, 30, starty - y);
 	        Bitmap temp = digda.Clone(r, digda.PixelFormat);
 	        scn.DrawImage(temp, x, y);
 	}
