@@ -25,16 +25,17 @@ namespace Digda
 	Random r = new Random();
 
 	int health;				        //체력
-	int startx, starty;			        //생성 위치
-	int x, y;				        //움직임 위치
+	public int startx, starty;			        //생성 위치
+	public int x, y;				        //움직임 위치
 	//int speed;
 	int stayTime;				        //노출시간
 	int stayCnt;
-	int limit;
-	bool digsw = true;			        //들락날락 스위치
+	public int limit = 100;
+	public bool digsw = true;			        //들락날락 스위치
 	bool alive;
 
 	int imgCnt;				        //이미지 플립용
+
 	int imgw, imgh;				        //두더지 스케일 조절용
 
 
@@ -43,13 +44,17 @@ namespace Digda
 	List<Bitmap> digdaAni = new List<Bitmap>();
 	Bitmap digdaImg;
 
-	public void Resize(int h)
+	public void resize()
 	{
+	        //가로 60, 세로 180
 	        //세로 크기에 따라 가로 가변 조절
-	        imgw = (int)(h / 3);
+
+
+	        imgh =  r.Next(90, 360);
+	        imgw = (int)(imgh / 3);
 	}
 
-	public Digda(int posx, int posy, int scale)
+	public Digda(int posx, int posy)
 	{
 	        imgw = 60;
 	        imgh = 180;
@@ -71,22 +76,19 @@ namespace Digda
 
 	        stayTime = r.Next(1, 20);		        //지속시간은 랜덤으로
 
-	        Resize(scale);
-	        limit = r.Next(50, 800);
-	        if (limit > imgh)
-		limit = imgh;
+	        resize();
 	}
 
-	public void Up(int t)
+	public void Up()
 	{
-	        y -= t;
+	        y -= r.Next(1, 20);
 	}
-	public void Down(int t)
+	public void Down()
 	{
-	        y += t;
+	        y += r.Next(1, 20);
 	}
 
-	public void Draw(Graphics scn)
+	public void draw(Graphics scn)
 	{
 	        if (starty - y > 90)				//영역 침범 방지
 		y = starty - 90;
@@ -100,11 +102,11 @@ namespace Digda
 	        scn.DrawImage(temp, x, y);
 	}
 
-	public void Dig()
+	public void dig()
 	{
 	        if (digsw)
 	        {
-		Up(r.Next(1,20));
+		Up();
 		if (Math.Abs(starty - y) > limit)
 		        digsw = false;
 	        }
@@ -112,7 +114,7 @@ namespace Digda
 	        {
 		if (stayTime == stayCnt)
 		{
-		        Down(r.Next(1, 20));
+		        Down();
 		        if (starty - y <= 0)
 		        {
 			y = starty - 1;
@@ -138,61 +140,15 @@ namespace Digda
 
         class Dirt
         {
-	Random r = new Random();
-
-	int imgw, imgh;
-	Bitmap dirt;
-	Bitmap dirtImg;
-	List<Bitmap> dirtAni = new List<Bitmap>();
-	int startx, starty;
-	int x, y;
-	bool fin = false;
-
-	int imgCnt;
-	public Dirt(int posx, int posy, int scale)
+	Dirt()
 	{
-	        imgw = 60;
-	        imgh = 60;
 
-	        dirtImg = Properties.Resources.soil;
-	        for (int i = 0; i < 480; i += 60)
-	        {
-		Rectangle cutImg = new Rectangle(i, 0, imgw, imgh);
-		Bitmap dirtSingle = dirtImg.Clone(cutImg, dirtImg.PixelFormat);
-		dirtAni.Add(dirtSingle);
-	        }
-	        startx = posx;
-	        starty = posy;
-
-	        
-
-	        Resize(scale);
-
-	        x = startx;
-	        y = starty - imgh + 10;
 	}
-	public void Draw(Graphics scn)
+	int time;
+
+	public void TimeLatency()
 	{
 
-	        imgCnt++;
-	        if (imgCnt >= 8)
-	        {
-		imgCnt = 7;
-		fin = true;
-	        }
-	        dirt = new Bitmap(dirtAni[imgCnt % 8], imgw, imgh);	        //줄줄이 그리자~
-	        scn.DrawImage(dirt, x, y);
-	}
-
-	public void Resize(int h)
-	{
-	        imgw = (int)(h / 3);
-	        imgh = imgw;
-	}
-
-	public bool DrawFinish()
-	{
-	        return fin;
 	}
         }
 }
