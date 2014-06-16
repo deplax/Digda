@@ -12,6 +12,8 @@ namespace Digda
 {
         public partial class Form1 : Form
         {
+	Random r = new Random();
+
 	Bitmap actor;
 	List<Bitmap> digda = new List<Bitmap>();
 	int x = 0;
@@ -29,7 +31,7 @@ namespace Digda
 	public Form1()
 	{
 	        InitializeComponent();
-	        timer1.Interval = 100;
+	        timer1.Interval = 20;		        /////////////////////////////////////////////////
 	        timer1.Enabled = true;
 
 	        Bitmap x = Properties.Resources.test02;
@@ -60,25 +62,27 @@ namespace Digda
 	        
 	void update()
 	{
+
 	        if (MouseButtons == MouseButtons.Left)
 		x += 10;
-	        
+	        int randx = r.Next(100, 300);
+	        int randy = r.Next(100, 300);
 
 	        soils = soil[(x / 10) % 8];
 
-	        if (count == 0)
+	        if (digdig.Count<1)
 	        {
-		Digda d = new Digda();
+		Digda d = new Digda(randx, randy);
 		digdig.Add(d);
 		count++;
 	        }
-	        
+	        //공존하는 두더지 숫자를 결정필요
 	        for (int i = 0; i < digdig.Count; i++)
 	        {
-		digdig[0].dig();
-		if (!digdig[0].DigdaAlive())
+		digdig[i].dig();
+		if (!digdig[i].DigdaAlive())	        //두더지가 죽었거나 튀었는지 검사
 		{
-		        digdig.RemoveAt(0);
+		        digdig.RemoveAt(i);		        //없으면 지움
 		}
 	        }
 	        
@@ -104,8 +108,11 @@ namespace Digda
 
 	        
 	        scn.DrawImage(back, 0, 0);
-	        for (int i = 0; i < digdig.Count; i++ )
-		digdig[0].draw(scn);
+
+	        for (int i = 0; i < digdig.Count; i++)
+	        {
+		digdig[i].draw(scn);	
+	        }
 	        
 
 	       
@@ -113,7 +120,7 @@ namespace Digda
 	        //scn.DrawImage(actor, 100, 100);
 	        scn.DrawImage(soils, 200, 200);
 
-	        g.DrawImage(screen, 0, 0);			//마지막에 따란~!
+	       g.DrawImage(screen, 0, 0);			//마지막에 따란~!
 	        
 
 

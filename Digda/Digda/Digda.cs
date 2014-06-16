@@ -22,14 +22,21 @@ namespace Digda
 	//기본적으로 공통적인 사항은... 흠...
 	//위치를 가지고, 체력을 가지겠지
 
-	int health;			        //체력
+	Random r = new Random();
+
+	int health;				        //체력
 	public int startx, starty;			        //생성 위치
 	public int x, y;				        //움직임 위치
-	int speed;
-	int upTime, StayTime, DownTime;	        //노출시간
+	//int speed;
+	int stayTime;				        //노출시간
+	int stayCnt;
 	public int limit = 100;
-	public bool digsw = true;		        //들락날락 스위치
+	public bool digsw = true;			        //들락날락 스위치
 	bool alive;
+
+	int imgCnt;				        //이미지 플립용
+
+	int imgw, imgh;				        //두더지 스케일 조절용
 
 
 
@@ -39,40 +46,51 @@ namespace Digda
 
 	public void resize()
 	{
-
+	        r.Next(0, 10);
 	}
 
-	public Digda()
+	public Digda(int posx, int posy)
 	{
-	       digdaImg = Properties.Resources.test02;
+	        imgw = 60;
+	        imgh = 180;
+
+	        digdaImg = Properties.Resources.test02;
 	        for (int i = 0; i < 240; i += 60)
 	        {
-		Rectangle  cutImg = new Rectangle(i, 0, 60, 180);
+		Rectangle cutImg = new Rectangle(i, 0, imgw, imgh);
 		Bitmap digdaSingle = digdaImg.Clone(cutImg, digdaImg.PixelFormat);
 		digdaAni.Add(digdaSingle);
 	        }
-	        startx = 200;
-	        starty = 200;
+	        startx = posx;
+	        starty = posy;
 
 	        x = startx;
 	        y = starty;
 
 	        alive = true;
+
+	        stayTime = r.Next(1, 20);		        //지속시간은 랜덤으로
 	}
 
 	public void Up()
 	{
-	        y -= 10;
+	        y -= r.Next(1, 20);
 	}
 	public void Down()
 	{
-	        y += 10;
+	        y += r.Next(1, 20);
 	}
 
 	public void draw(Graphics scn)
 	{
-	        digda = digdaAni[Math.Abs(y % 4)];
-	        Rectangle r = new Rectangle(0, 0, 60, starty - y);
+	        if (starty - y > 90)				//영역 침범 방지
+		y = starty - 90;
+
+	        resize();
+
+	        imgCnt++;
+	        digda = new Bitmap(digdaAni[imgCnt % 4], 30, 90);	        //줄줄이 그리자~
+	        Rectangle r = new Rectangle(0, 0, 30, starty - y);
 	        Bitmap temp = digda.Clone(r, digda.PixelFormat);
 	        scn.DrawImage(temp, x, y);
 	}
@@ -82,18 +100,25 @@ namespace Digda
 	        if (digsw)
 	        {
 		Up();
-		if (Math.Abs(starty -y) > limit)
+		if (Math.Abs(starty - y) > limit)
 		        digsw = false;
 	        }
 	        else
 	        {
-		Down();
-		if (starty - y <= 0)
+		if (stayTime == stayCnt)
 		{
-		        y = starty - 1;
-		        alive = false;
+		        Down();
+		        if (starty - y <= 0)
+		        {
+			y = starty - 1;
+			alive = false;
+		        }
 		}
-		
+		else
+		{
+		        stayCnt++;
+		}
+
 	        }
 	}
 
@@ -108,6 +133,10 @@ namespace Digda
 
         class Dirt
         {
+	Dirt()
+	{
+
+	}
 	int time;
 
 	public void TimeLatency()
