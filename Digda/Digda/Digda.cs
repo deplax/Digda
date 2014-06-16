@@ -46,7 +46,12 @@ namespace Digda
 
 	public void resize()
 	{
-	        r.Next(0, 10);
+	        //가로 60, 세로 180
+	        //세로 크기에 따라 가로 가변 조절
+
+
+	        imgh =  r.Next(90, 360);
+	        imgw = (int)(imgh / 3);
 	}
 
 	public Digda(int posx, int posy)
@@ -70,6 +75,8 @@ namespace Digda
 	        alive = true;
 
 	        stayTime = r.Next(1, 20);		        //지속시간은 랜덤으로
+
+	        resize();
 	}
 
 	public void Up()
@@ -83,14 +90,12 @@ namespace Digda
 
 	public void draw(Graphics scn)
 	{
-	        if (starty - y > 90)				//영역 침범 방지
-		y = starty - 90;
-
-	        resize();
+	        if (starty - y > imgh)				//영역 침범 방지
+		y = starty - imgh;
 
 	        imgCnt++;
-	        digda = new Bitmap(digdaAni[imgCnt % 4], 30, 90);	        //줄줄이 그리자~
-	        Rectangle r = new Rectangle(0, 0, 30, starty - y);
+	        digda = new Bitmap(digdaAni[imgCnt % 4], imgw, imgh);	        //줄줄이 그리자~
+	        Rectangle r = new Rectangle(0, 0, imgw, starty - y);
 	        Bitmap temp = digda.Clone(r, digda.PixelFormat);
 	        scn.DrawImage(temp, x, y);
 	}
