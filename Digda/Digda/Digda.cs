@@ -25,7 +25,7 @@ namespace Digda
 
 	Random r = new Random();
 
-	int health;				        //체력
+	//int health;				        //체력
 	int startx, starty;			        //생성 위치
 	int x, y;				        //움직임 위치
 	//int speed;
@@ -49,16 +49,15 @@ namespace Digda
 	Bitmap hit;
 	Rectangle box;
 
-	public void Resize(int h)
+	private void Resize(int h)
 	{
 	        //세로 크기에 따라 가로 가변 조절
 	        imgw = (int)(h / 8);
 	}
-	public void test()
+
+	public void SetLimit(int limit)
 	{
-	        hit = Properties.Resources.angry;
-	       // hit.
-	        MessageBox.Show("test");
+	        this.limit = limit;
 	}
 
 	public Digda(int posx, int posy, int scale)
@@ -83,10 +82,10 @@ namespace Digda
 	        alive = true;
 	        die = false;
 
-	        stayTime = r.Next(1, 20);		        //지속시간은 랜덤으로
+	        stayTime = r.Next(1, 25);		        //지속시간은 랜덤으로
 
 	        Resize(scale);
-	        limit = r.Next(50, 1000); // 50 700
+	        //limit = r.Next(50, 1000); // 50 700
 	        if (limit > imgh)
 		limit = imgh;
 	}
@@ -134,7 +133,7 @@ namespace Digda
 	{
 	        if (digsw)
 	        {
-		Up(r.Next(10, 40));
+		Up(r.Next(10, 50));
 		if (Math.Abs(starty - y) > limit)
 		        digsw = false;
 	        }
@@ -142,7 +141,7 @@ namespace Digda
 	        {
 		if (stayTime == stayCnt)
 		{
-		        Down(r.Next(10, 40));
+		        Down(r.Next(10, 50));
 		        if (starty - y <= 0)
 		        {
 			y = starty - 1;
@@ -177,10 +176,11 @@ namespace Digda
 	public void DigdaDie()
 	{
 	        die = true;
-	        
-
 	}
-
+	public bool GetDie()
+	{
+	        return die;
+	}
         }
 
 
